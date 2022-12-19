@@ -1,7 +1,6 @@
 add_executable(widen_client
     src/widen/client/main.cc
 )
-message(${CMAKE_CURRENT_SOURCE_DIR})
 
 target_include_directories(widen_client
 PUBLIC

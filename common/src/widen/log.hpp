@@ -2,6 +2,8 @@
 
 #include <spdlog/spdlog.h>
 #include <spdlog/async.h>
+#include <spdlog/fmt/bundled/chrono.h>
+#include <spdlog/fmt/bundled/ranges.h>
 
 #include "fmt.hpp"
 

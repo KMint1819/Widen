@@ -1,5 +1,4 @@
 set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/3rdparty/catch2;${CMAKE_MODULE_PATH})
-message(${CMAKE_MODULE_PATH})
 include(Catch)
 include(CTest)
 add_executable(mytests 

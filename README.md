@@ -1,4 +1,8 @@
-# CppProjectTemplate
+# Widen
+
+## Dependencies
+- protobuf
+- asio
 
 ## Unit tests
 - Run unit test using the following command:
@@ -7,12 +11,9 @@ ctest -VV --test-dir test/
 ```
 
 ## TODOs
-- ~Unit test~
-- ~fmt~
-- ~logging~
-- app
-- json
-- clang format
+- docker
+- clang-tidy
+- distributed unit tests
+- precompiled headers
 
 ## Improvements
-- static library dependencies

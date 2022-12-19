@@ -4,15 +4,11 @@ include(Catch)
 include(CTest)
 add_executable(mytests 
     test_main.cc
-    test_alan.cc
+    test_random.cc
 )
 target_include_directories(mytests
     PRIVATE
         ${PROJECT_SOURCE_DIR}/include/
-)
-target_link_libraries(mytests
-    PRIVATE
-        MY_LIB_NAME
 )
 
 catch_discover_tests(mytests)

@@ -1,6 +1,8 @@
 # Widen
 A distributed system for deep learning model inference
 
+> For detail information of this project, refer to [here](docs/)
+
 ## Usage
 
 - Build the project

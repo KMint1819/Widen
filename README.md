@@ -4,6 +4,10 @@ A distributed system for deep learning model inference
 > For detail information of this project, refer to [here](docs/)
 
 ## Usage
+- Clone the project
+    ```bash
+    git clone --recursive https://github.com/KMint1819/Widen.git
+    ```
 
 - Build the project
     ```cmake

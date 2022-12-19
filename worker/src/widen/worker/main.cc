@@ -1,5 +1,5 @@
 #include <cstdio>
-#include "widen/log.hpp"
+#include "widen/common/log.hpp"
 
 int main()
 {

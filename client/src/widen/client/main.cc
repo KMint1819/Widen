@@ -2,7 +2,9 @@
 #include <chrono>
 #include <vector>
 
-#include "widen/log.hpp"
+#include <asio.hpp>
+
+#include "widen/common/log.hpp"
 
 int main()
 {
@@ -17,5 +19,8 @@ int main()
 
     std::vector<int> v = {1, 2, 3};
     WIDEN_ERROR("printing vector! {}", v);
+
+    asio::io_context context;
+    WIDEN_INFO("asio ok!");
     return 0;
 }

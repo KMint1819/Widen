@@ -1,5 +1,5 @@
 add_library(widen_common
-    src/widen/log.cc
+    src/widen/common/log.cc
 )
 find_package(Threads REQUIRED)
 

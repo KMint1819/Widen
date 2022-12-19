@@ -1,4 +1,4 @@
-#include "widen/log.hpp"
+#include "widen/common/log.hpp"
 
 #include <spdlog/sinks/stdout_color_sinks.h>
 #include <spdlog/sinks/basic_file_sink.h>

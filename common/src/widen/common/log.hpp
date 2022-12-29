@@ -12,11 +12,16 @@ namespace widen
     class Log
     {
     public:
-        static void init();
+        /**
+         * @brief Get the Logger object
+         *
+         * @return std::shared_ptr<spdlog::logger>&
+         */
         static std::shared_ptr<spdlog::logger> &getLogger();
 
     private:
         static std::shared_ptr<spdlog::logger> logger;
+        static void init();
     };
 }
 

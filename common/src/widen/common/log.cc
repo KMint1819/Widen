@@ -24,6 +24,8 @@ namespace widen
 
         logger->info("Logger initialized");
     }
+
+    // TODO: check if this implementation is thread-safe
     std::shared_ptr<spdlog::logger> &Log::getLogger()
     {
         if (!logger)

@@ -2,6 +2,7 @@ add_executable(widen_worker
     src/widen/worker/main.cc
 )
 
+add_dependencies(widen_worker widen_common)
 target_include_directories(widen_worker
 PUBLIC
     ${PROJECT_SOURCE_DIR}/3rdparty/

@@ -1,19 +1,20 @@
+set(SOURCES
+    src/widen/common/log.cc)
+set(HEADERS
+    src/widen/common/fmt.hpp
+    src/widen/common/log.hpp)
 add_library(widen_common
-    src/widen/common/log.cc
-)
-find_package(Threads REQUIRED)
+    ${SOURCES}
+    ${HEADERS})
 
-set(PROTOBUF_PATH 3rdparty/protobuf)
-include(${PROTOBUF_PATH}/cmake/)
-find_package(Pro)
+find_package(Threads REQUIRED)
 
 target_include_directories(widen_common
 PUBLIC
     ${PROJECT_SOURCE_DIR}/3rdparty/
-    src
-)
+    src)
 
 target_link_libraries(widen_common
-PRIVATE
+PUBLIC
     Threads::Threads
 )

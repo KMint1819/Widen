@@ -23,7 +23,7 @@ A distributed system for deep learning model inference
 
     ### IF YOU WANT TO USE DOCKER, RUN THE CONTAINER HERE
     # docker build . -t widen
-    # docker run -it -v <your absolute path to this project>:/workspace widen
+    # docker run -it -v <your absolute path to this project>:/workspace -u $(whoami) widen
     ###    
 
     cd build

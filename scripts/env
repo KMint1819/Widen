@@ -1,0 +1,3 @@
+ls
+docker build -t widen .
+docker run -it --rm -v $(pwd):/workspace widen

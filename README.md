@@ -22,8 +22,7 @@ A distributed system for deep learning model inference
     cd Widen && mkdir build
 
     ### IF YOU WANT TO USE DOCKER, RUN THE CONTAINER HERE
-    # docker build . -t widen
-    # docker run -it -v $(pwd):/workspace -u $(whoami) widen
+    ./scripts/env
     ###    
 
     cd build

@@ -21,9 +21,9 @@ A distributed system for deep learning model inference
     ```cmake
     cd Widen && mkdir build
 
-    ### IF YOU WANT TO USE DOCKER, RUN THE CONTAINER HERE
+    ### IF YOU WANT TO USE DOCKER, RUN THE CONTAINER HERE USING THIS SCRIPT:
     ./scripts/env
-    ###    
+    ### 
 
     cd build
     cmake ..

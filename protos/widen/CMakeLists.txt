@@ -6,7 +6,7 @@ set(PROTOS
     gossip.proto
 )
 target_sources(widen_protos
-PRIVATE
+PUBLIC
     ${PROTOS}
 )
 

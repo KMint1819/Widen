@@ -1,6 +1,5 @@
 add_executable(mytests)
 add_dependencies(mytests widen_common)
-add_subdirectory(proto)
 
 find_package(Protobuf REQUIRED)
 
@@ -11,15 +10,16 @@ include(CTest)
 set(SOURCES 
     test_main.cc
     test_random.cc
-    test_protobuf.cc)
+    test_proto.cc)
 
 target_include_directories(mytests
     PRIVATE
-        ${PROJECT_SOURCE_DIR}/include)
+        ${PROJECT_SOURCE_DIR}/common/src
+        ${PROJECT_BINARY_DIR}/protos)
 target_link_libraries(mytests
     PRIVATE
-        ${Protobuf_LIBRARIES}
-        widen_test_protos)
+        widen_common
+        widen_protos)
 
 target_sources(mytests
 PRIVATE

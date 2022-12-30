@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package widen;
+
+message Gossip {
+    oneof GossipTypes {
+        GossipNewMember gossipNewMember = 1;
+    }
+}
+
+message GossipNewMember {
+    int32 id = 1;
+}

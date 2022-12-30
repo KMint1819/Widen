@@ -6,6 +6,7 @@ set(HEADERS
 add_library(widen_common
     ${SOURCES}
     ${HEADERS})
+add_dependencies(widen_common widen_protos)
 
 find_package(Threads REQUIRED)
 
@@ -17,4 +18,5 @@ PUBLIC
 target_link_libraries(widen_common
 PUBLIC
     Threads::Threads
+    widen_protos
 )

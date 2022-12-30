@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package widen;
+
+message JoinRequest {
+    int32 gen = 1;
+}
+
+message JoinReply {
+    int32 id = 1;
+}

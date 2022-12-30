@@ -1,8 +1,0 @@
-syntax = "proto3";
-
-package widen.test;
-
-message Me {
-  string name = 1;
-  int32 groupID = 2;
-}

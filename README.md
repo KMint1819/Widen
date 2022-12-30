@@ -39,7 +39,6 @@ A distributed system for deep learning model inference
     ```
 
 ## TODOs
-- yaml-cpp
 - clang-tidy
 - distributed unit tests
 - precompiled headers

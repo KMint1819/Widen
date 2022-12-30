@@ -7,6 +7,7 @@ A distributed system for deep learning model inference
 ## Usage
 ### What you'll need
 > If you don't want to mess up with your own computer environment, consider using the provided dockerfile
+- ubuntu >= 20.04
 - cmake >= 3.17.0
 - suitable compiler for your platform that supports C++17
 - protobuf
@@ -38,8 +39,7 @@ A distributed system for deep learning model inference
     ```
 
 ## TODOs
-- common/include
-- docker
+- yaml-cpp
 - clang-tidy
 - distributed unit tests
 - precompiled headers

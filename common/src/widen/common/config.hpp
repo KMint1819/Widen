@@ -4,6 +4,8 @@
 
 namespace widen
 {
+
+    // TODO: Maybe try to use a singleton class
     namespace config
     {
         namespace port

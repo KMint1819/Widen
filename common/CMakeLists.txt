@@ -1,3 +1,4 @@
+add_library(widen_common)
 set(SOURCES
     src/widen/common/log.cc
     src/widen/common/config.cc
@@ -7,7 +8,8 @@ set(HEADERS
     src/widen/common/log.hpp
     src/widen/common/config.hpp
 )
-add_library(widen_common
+target_sources(widen_common
+PRIVATE
     ${SOURCES}
     ${HEADERS}
 )
@@ -22,7 +24,6 @@ PUBLIC
     ${YAML_CPP_INCLUDE_DIR}
     src
 )
-message(${YAML_CPP_INCLUDE_DIR})
 target_link_libraries(widen_common
 PUBLIC
     Threads::Threads

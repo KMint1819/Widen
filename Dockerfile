@@ -25,7 +25,7 @@ RUN make -j8 && \
 
 # Install yaml-cpp
 WORKDIR /opt
-RUN wget -O yaml-cpp.tar.gz https://github.com/jbeder/yaml-cpp/archive/refs/tags/yaml-cpp-0.7.0.tar.gz && \
+RUN wget -O yaml-cpp.tar.gz https://github.com/jbeder/yaml-cpp/archive/refs/tags/yaml-cpp-0.6.3.tar.gz && \
     mkdir yaml-cpp && \
     tar -xvzf yaml-cpp.tar.gz -C yaml-cpp --strip 1
 WORKDIR /opt/yaml-cpp/build

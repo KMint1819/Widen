@@ -2,6 +2,8 @@ add_library(widen_protos)
 find_package(Protobuf REQUIRED)
 
 set(PROTOS 
+    general.proto
+    messages.proto
     introduce.proto
     gossip.proto
 )

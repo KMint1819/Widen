@@ -3,9 +3,11 @@ add_executable(widen_worker)
 set(SOURCES
     src/widen/worker/main.cc
     src/widen/worker/worker.cc
+    src/widen/worker/message_listener.cc
 )
 set(HEADERS
     src/widen/worker/worker.hpp
+    src/widen/worker/message_listener.hpp
 )
 target_sources(widen_worker
 PRIVATE

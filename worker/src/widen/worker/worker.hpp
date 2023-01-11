@@ -14,7 +14,7 @@ namespace widen
         void start();
 
     private:
-        asio::io_context ctx;
+        asio::io_context ioc;
 
         void joinFileOfHosts(const std::filesystem::path &filePath);
         void joinListOfHosts(const std::vector<std::string> &hostList);

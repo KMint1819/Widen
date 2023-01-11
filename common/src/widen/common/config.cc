@@ -9,7 +9,7 @@ namespace widen
     {
         namespace port
         {
-            int join = 9999;
+            int message = 9999;
         }
 
         void loadConfigFile(std::filesystem::path configFile)
@@ -18,7 +18,7 @@ namespace widen
             try
             {
                 YAML::Node node = YAML::LoadFile(configFile.string());
-                port::join = node["port"]["join"].as<int>();
+                port::message = node["port"]["message"].as<int>();
             }
             catch (YAML::BadFile &e)
             {

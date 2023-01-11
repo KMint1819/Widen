@@ -10,6 +10,7 @@ include(CTest)
 set(SOURCES 
     test_main.cc
     test_random.cc
+    test_common.cc
     test_proto.cc)
 
 target_include_directories(mytests

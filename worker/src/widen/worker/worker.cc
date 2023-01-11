@@ -1,5 +1,7 @@
 #include "widen/common/log.hpp"
+#include "widen/common/config.hpp"
 #include "widen/worker/worker.hpp"
+#include "widen/worker/message_listener.hpp"
 
 #include <fstream>
 
@@ -32,6 +34,7 @@ namespace widen
 
     void Worker::mainLoop()
     {
-        ctx.run();
+        std::make_shared<MessageListener>(ioc, config::port::message)->start();
+        ioc.run();
     }
 }

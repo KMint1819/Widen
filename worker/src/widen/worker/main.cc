@@ -7,7 +7,7 @@
 int main()
 {
     widen::config::loadConfigFile("config.yaml");
-    WIDEN_INFO("After config: port = {}", widen::config::port::join);
+    WIDEN_INFO("After config: port = {}", widen::config::port::message);
     widen::Worker worker;
     worker.start();
 

@@ -8,7 +8,8 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
     build-essential \
     git \
     cmake \
-    wget
+    wget \
+    iputils-ping
 
 # Install protobuf
 WORKDIR /opt
@@ -42,4 +43,4 @@ RUN make -j8 && \
     make install
 
 
-WORKDIR /workspace
+WORKDIR /home

@@ -1,0 +1,8 @@
+version: '3'
+
+services:
+  vm: 
+    image: widen
+    build: .
+    stdin_open: true
+    tty: true

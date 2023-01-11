@@ -4,6 +4,22 @@ package widen;
 
 import "general.proto";
 
+message Message {
+    oneof Type {
+        JoinRequest joinRequest = 1;
+        JoinMsg joinMsg = 2;
+        HeartbeatMsg heartbeatMsg= 3;
+        DeadMsg deadMsg= 4;
+    }
+}
+
+message JoinRequest {
+    Identifier identifier = 1;
+}
+
+message JoinReply {
+}
+
 message JoinMsg {
     Identifier identifier = 1;
 }

@@ -9,7 +9,7 @@ namespace widen
     {
         namespace port
         {
-            int message = 9999;
+            int message = 10101;
         }
 
         void loadConfigFile(std::filesystem::path configFile)

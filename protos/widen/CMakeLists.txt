@@ -4,7 +4,6 @@ find_package(Protobuf REQUIRED)
 set(PROTOS 
     general.proto
     messages.proto
-    introduce.proto
     gossip.proto
 )
 target_sources(widen_protos

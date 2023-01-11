@@ -5,7 +5,7 @@
 
 namespace widen
 {
-    std::string getDelim();
+    std::string getMessageDelim();
 
     std::string addDelimToEnd(std::string s);
 

@@ -11,7 +11,7 @@ TEST_CASE("Test message addons", "[common/message_addon]")
     REQUIRE_THROWS(widen::removeDelimFromEnd(s));
 
     std::string added = widen::addDelimToEnd(s);
-    REQUIRE(s.length() + widen::getDelim().length() == added.length());
+    REQUIRE(s.length() + widen::getMessageDelim().length() == added.length());
 
     std::string removed = widen::removeDelimFromEnd(added);
     REQUIRE(removed == s);

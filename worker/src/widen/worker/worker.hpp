@@ -6,6 +6,8 @@
 
 #include <asio.hpp>
 
+#include "widen/messages.pb.h"
+
 namespace widen
 {
     using asio::ip::tcp;
@@ -20,7 +22,7 @@ namespace widen
         asio::io_context ioc;
         tcp::resolver::results_type introducerEndpoints;
 
-        void joinViaIntroducer();
+        std::vector<Identifier> joinViaIntroducer();
         void mainLoop();
     };
 }

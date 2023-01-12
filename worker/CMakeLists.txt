@@ -4,20 +4,22 @@ set(SOURCES
     src/widen/worker/main.cc
     src/widen/worker/worker.cc
     src/widen/worker/message_listener.cc
+    src/widen/worker/handlers/joinRequestHandler.cc
 )
 set(HEADERS
     src/widen/worker/worker.hpp
     src/widen/worker/message_listener.hpp
+    src/widen/worker/handlers/joinRequestHandler.hpp
 )
 target_sources(widen_worker
-PRIVATE
+    PRIVATE
     ${SOURCES}
     ${HEADERS}
 )
 
 add_dependencies(widen_worker widen_common)
 target_include_directories(widen_worker
-PUBLIC
+    PUBLIC
     src/
 )
 

@@ -1,35 +1,60 @@
 #include "widen/common/log.hpp"
 #include "widen/common/config.hpp"
+#include "widen/common/utils.hpp"
 #include "widen/worker/worker.hpp"
 #include "widen/worker/message_listener.hpp"
+#include "widen/messages.pb.h"
 
 #include <fstream>
+#include <chrono>
 
 namespace widen
 {
+    Worker::Worker(int argc, char **argv)
+    {
+        std::string introducer;
+
+        if (argc == 1)
+        {
+            WIDEN_WARN("Running worker in a new scope...");
+        }
+        else if (argc == 2)
+        {
+            introducer = argv[1];
+            WIDEN_WARN("Connecting worker to {}...", introducer);
+
+            tcp::resolver resolver(ioc);
+            introducerEndpoints = resolver.resolve(argv[1], argv[2]);
+        }
+    }
+
     void Worker::start()
     {
-        std::filesystem::path fileOfHosts("../known_hosts.txt");
-        joinFileOfHosts(fileOfHosts);
+        if (introducerEndpoints.size() > 0)
+            joinViaIntroducer();
         mainLoop();
     }
 
-    void Worker::joinFileOfHosts(const std::filesystem::path &filePath)
+    void Worker::joinViaIntroducer()
     {
-        std::ifstream fin(filePath.string());
+        tcp::socket socket(ioc);
+        asio::connect(socket, introducerEndpoints);
+        WIDEN_WARN("Worker connected to {}:{}",
+                   socket.remote_endpoint().address().to_v4(),
+                   socket.remote_endpoint().port());
 
-        std::string input;
-        std::vector<std::string> hostList;
-        while (fin >> input)
-        {
-            hostList.push_back(input);
-        }
-        joinListOfHosts(hostList);
-    }
+        std::string ip = socket.local_endpoint()
+                             .address()
+                             .to_v4()
+                             .to_string();
+        long timestamp = getTimestamp();
+        Identifier identifier;
+        identifer
 
-    void Worker::joinListOfHosts(const std::vector<std::string> &hostList)
-    {
-        WIDEN_TRACE("Joining host lists: {}", hostList);
+            identifier.set_ip();
+        socket.local_endpoint().address().to_v4().to_string();
+        joinReq.identifier
+            Message message;
     }
 
     void Worker::mainLoop()

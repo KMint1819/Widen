@@ -2,12 +2,14 @@ add_library(widen_common)
 set(SOURCES
     src/widen/common/log.cc
     src/widen/common/config.cc
+    src/widen/common/utils.cc
     src/widen/common/message_addon.cc
 )
 set(HEADERS
     src/widen/common/fmt.hpp
     src/widen/common/log.hpp
     src/widen/common/config.hpp
+    src/widen/common/utils.hpp
     src/widen/common/message_addon.hpp
 )
 target_sources(widen_common

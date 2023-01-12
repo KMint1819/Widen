@@ -1,22 +1,22 @@
 add_library(widen_protos)
 find_package(Protobuf REQUIRED)
 
-set(PROTOS 
+set(PROTOS
     general.proto
     messages.proto
     gossip.proto
 )
 target_sources(widen_protos
-PRIVATE
+    PRIVATE
     ${PROTOS}
 )
 
 target_include_directories(widen_protos
-PUBLIC
+    PUBLIC
     ${CMAKE_CURRENT_BINARY_DIR}
 )
 target_link_libraries(widen_protos
-PUBLIC
+    PUBLIC
     protobuf::libprotobuf
 )
 

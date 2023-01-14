@@ -2,14 +2,14 @@
 
 #include "widen/common/log.hpp"
 #include "widen/common/config.hpp"
-#include "widen/worker/worker.hpp"
+#include "widen/node/node.hpp"
 
 int main()
 {
     widen::config::loadConfigFile("config.yaml");
     WIDEN_INFO("After config: port = {}", widen::config::port::join);
-    widen::Worker worker;
-    worker.start();
+    widen::Node node;
+    node.start();
 
     return 0;
 }

@@ -8,7 +8,7 @@
 
 namespace widen
 {
-    class Worker
+    class Node
     {
     public:
         void start();

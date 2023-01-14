@@ -39,7 +39,7 @@ namespace widen
                 WIDEN_TRACE("Identifier: {}", identifier.DebugString());
             }
         }
-        // mainLoop();
+        mainLoop();
     }
 
     std::vector<Identifier> Worker::joinViaIntroducer()
@@ -50,25 +50,21 @@ namespace widen
                    socket.remote_endpoint().address().to_v4().to_string(),
                    socket.remote_endpoint().port());
 
+        Identifier identifier;
+        std::string ip = socket.local_endpoint()
+                             .address()
+                             .to_v4()
+                             .to_string();
+        long timestamp = getTimestamp();
+        identifier.set_ip(ip);
+        identifier.set_inittimestamp(timestamp);
+
+        JoinRequest joinReq;
+        joinReq.set_allocated_identifier(&identifier);
+
         Message message;
-        {
-            JoinRequest joinReq;
-            {
-                std::string ip = socket.local_endpoint()
-                                     .address()
-                                     .to_v4()
-                                     .to_string();
-                long timestamp = getTimestamp();
-                Identifier identifier;
-                {
-                    identifier.set_ip(ip);
-                    identifier.set_inittimestamp(timestamp);
-                }
-                joinReq.set_allocated_identifier(&identifier);
-            }
-            message.set_allocated_joinrequest(&joinReq);
-            WIDEN_TRACE("Join string: {}", message.DebugString());
-        }
+        message.set_allocated_joinrequest(&joinReq);
+        WIDEN_TRACE("Join string: {}", message.DebugString());
 
         std::string protoString = message.SerializeAsString();
         protoString = addDelimToEnd(protoString);
@@ -95,7 +91,10 @@ namespace widen
 
     void Worker::mainLoop()
     {
-        std::make_shared<MessageListener>(ioc, config::port::message)->start();
+        MessageListener listener(ioc, config::port::message);
+        listener.start();
         ioc.run();
+
+        WIDEN_WARN("Worker exiting...");
     }
 }

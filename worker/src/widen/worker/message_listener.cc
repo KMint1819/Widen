@@ -8,9 +8,9 @@ namespace widen
 {
     MessageListener::MessageListener(asio::io_context &ioc, int port)
         : ioc(ioc),
-          port(port),
           acceptor(ioc, tcp::endpoint(tcp::v4(), port)),
-          socket(ioc)
+          socket(ioc),
+          port(port)
     {
     }
 
@@ -29,17 +29,21 @@ namespace widen
             }
             else
             {
+                WIDEN_TRACE("Accepting: {}", socket.remote_endpoint().address().to_string());
                 std::make_shared<MessageSession>(std::move(socket))->start();
             } 
             doAccept(); });
     }
 
     MessageSession::MessageSession(tcp::socket socket)
-        : socket(std::move(socket)),
-          recvBuf(recvBufSize) {}
+        : socket(std::move(socket))
+    {
+    }
 
     void MessageSession::start()
     {
+        auto self(shared_from_this());
+        WIDEN_TRACE("Reading message from {}...", socket.remote_endpoint().address().to_string());
         asio::async_read_until(socket,
                                asio::dynamic_buffer(recvBuf),
                                getMessageDelim(),
@@ -52,8 +56,8 @@ namespace widen
                                    else
                                    {
                                        WIDEN_TRACE("Read {} bytes including delim", sz);
-                                       std::string msgWithDelim(recvBuf.begin(), recvBuf.begin() + sz);
-                                       std::string msg = removeDelimFromEnd(msgWithDelim);
+                                       std::string msg(recvBuf.begin(), recvBuf.begin() + sz);
+                                       msg = removeDelimFromEnd(msg);
                                        handleMessage(msg);
                                    }
                                });
@@ -63,9 +67,12 @@ namespace widen
     {
         Message message;
         message.ParseFromString(msg);
+        message.PrintDebugString();
+        // WIDEN_TRACE("Handling message: {}", message.PrintDebugString());
 
         if (message.has_joinrequest())
         {
+            WIDEN_TRACE("Message is a join request!");
             std::make_shared<JoinRequestHandler>(std::move(socket), message.joinrequest())->start();
         }
     }

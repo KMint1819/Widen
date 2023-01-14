@@ -4,7 +4,7 @@
 namespace widen
 {
     using asio::ip::tcp;
-    class MessageListener : std::enable_shared_from_this<MessageListener>
+    class MessageListener
     {
     public:
         MessageListener(asio::io_context &ioc, int port);
@@ -19,7 +19,7 @@ namespace widen
         void doAccept();
     };
 
-    class MessageSession
+    class MessageSession : public std::enable_shared_from_this<MessageSession>
     {
         friend class MessageListener;
 
@@ -28,7 +28,6 @@ namespace widen
 
     private:
         tcp::socket socket;
-        const int recvBufSize = 1024;
         std::vector<char> recvBuf;
 
         void start();

@@ -5,7 +5,7 @@
 namespace widen
 {
     using asio::ip::tcp;
-    class JoinRequestHandler
+    class JoinRequestHandler : public std::enable_shared_from_this<JoinRequestHandler>
     {
     public:
         JoinRequestHandler(tcp::socket, const JoinRequest &);

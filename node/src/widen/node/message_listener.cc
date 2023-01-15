@@ -42,33 +42,53 @@ namespace widen
 
     void MessageSession::start()
     {
+        doReadHeader();
+    }
+
+    void MessageSession::doReadHeader()
+    {
         auto self(shared_from_this());
-        WIDEN_TRACE("Reading message from {}...", socket.remote_endpoint().address().to_string());
-        asio::async_read_until(socket,
-                               asio::dynamic_buffer(recvBuf),
-                               getMessageDelim(),
-                               [this](asio::error_code ec, std::size_t sz)
-                               {
-                                   if (ec)
-                                   {
-                                       WIDEN_ERROR("Error read: {}", ec.message());
-                                   }
-                                   else
-                                   {
-                                       WIDEN_TRACE("Read {} bytes including delim", sz);
-                                       std::string msg(recvBuf.begin(), recvBuf.begin() + sz);
-                                       msg = removeDelimFromEnd(msg);
-                                       handleMessage(msg);
-                                   }
-                               });
+        asio::async_read(socket, asio::buffer(recvBuf, 4),
+                         [this, self](asio::error_code ec, std::size_t sz)
+                         {
+                             if (ec)
+                             {
+                                 WIDEN_ERROR("Error read header: {}", ec.message());
+                             }
+                             else
+                             {
+                                 WIDEN_TRACE("Read {} bytes of header", sz);
+
+                                 int bodyLength = widen::convertLengthString(std::string(recvBuf.begin(), recvBuf.begin() + sz));
+                                 doReadBody(bodyLength);
+                             }
+                         });
+    }
+
+    void MessageSession::doReadBody(int length)
+    {
+        auto self(shared_from_this());
+        asio::async_read(socket, asio::buffer(recvBuf, length),
+                         [this, self](asio::error_code ec, std::size_t sz)
+                         {
+                             if (ec)
+                             {
+                                 WIDEN_ERROR("Error read body: {}", ec.message());
+                             }
+                             else
+                             {
+                                 WIDEN_TRACE("Read {} bytes of body", sz);
+                                 handleMessage(std::string(recvBuf.begin(), recvBuf.begin() + sz));
+                             }
+                             doReadHeader();
+                         });
     }
 
     void MessageSession::handleMessage(const std::string &msg)
     {
         Message message;
         message.ParseFromString(msg);
-        message.PrintDebugString();
-        // WIDEN_TRACE("Handling message: {}", message.PrintDebugString());
+        WIDEN_TRACE("Handling message: {}", message.DebugString());
 
         if (message.has_joinrequest())
         {

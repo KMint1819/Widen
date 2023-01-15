@@ -21,16 +21,16 @@ namespace widen
 
     class MessageSession : public std::enable_shared_from_this<MessageSession>
     {
-        friend class MessageListener;
-
     public:
         MessageSession(tcp::socket socket);
+        void start();
 
     private:
         tcp::socket socket;
-        std::vector<char> recvBuf;
+        std::array<char, 8192> recvBuf;
 
-        void start();
+        void doReadHeader();
+        void doReadBody(int);
         void handleMessage(const std::string &);
     };
 }

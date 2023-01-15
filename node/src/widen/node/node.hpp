@@ -23,6 +23,8 @@ namespace widen
         tcp::resolver::results_type introducerEndpoints;
 
         std::vector<Identifier> joinViaIntroducer();
+        Message constructJoinMessage(std::string ip, long timestamp);
+
         void mainLoop();
     };
 }

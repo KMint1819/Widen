@@ -12,10 +12,10 @@ namespace widen
 {
     using asio::ip::tcp;
 
-    class Worker
+    class Node
     {
     public:
-        Worker(int argc, char **argv);
+        Node(int argc, char **argv);
         void start();
 
     private:

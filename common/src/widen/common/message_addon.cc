@@ -1,29 +1,22 @@
+#include "widen/common/fmt.hpp"
+#include "widen/common/log.hpp"
 #include "widen/common/message_addon.hpp"
 
 namespace widen
 {
-    std::string getMessageDelim()
+    std::string addLengthToStringFront(const std::string &s)
     {
-        return "\r\n\r\n";
+        std::string str = fmt::format("{:04d}", s.length()) + s;
+        WIDEN_TRACE("Converted <{},{}> to <{},{}>",
+                    s.length(), s, str.length(), s);
+        return str;
     }
-
-    std::string addDelimToEnd(std::string s)
+    int convertLengthString(const std::string &s)
     {
-        return s + getMessageDelim();
-    }
-
-    std::string removeDelimFromEnd(const std::string &s)
-    {
-        if (s.length() < 4)
-            throw std::runtime_error(fmt::format("string <{}> shorter than delimiter!", s));
-
-        std::string delim = getMessageDelim();
-        if (!std::equal(delim.rbegin(), delim.rend(), s.rbegin()))
-        {
-            throw std::runtime_error(fmt::format("string <{}> does not end with a delimiter!", s));
-        }
-
-        int afterLen = s.length() - delim.length();
-        return s.substr(0, afterLen);
+        if (s.length() != 4)
+            throw std::logic_error("Length string should have 4 digits!");
+        int len = std::stoi(s);
+        WIDEN_TRACE("Length stirng {} == int {}", s, len);
+        return len;
     }
 }

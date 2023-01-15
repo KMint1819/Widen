@@ -5,14 +5,12 @@
 TEST_CASE("Test message addons", "[common/message_addon]")
 {
     std::string s = "";
-    REQUIRE_THROWS(widen::removeDelimFromEnd(s));
+    std::string res = widen::addLengthToStringFront(s);
+    int len = widen::convertLengthString(res.substr(0, 4));
+    REQUIRE(len == 0);
 
-    s = "some Message";
-    REQUIRE_THROWS(widen::removeDelimFromEnd(s));
-
-    std::string added = widen::addDelimToEnd(s);
-    REQUIRE(s.length() + widen::getMessageDelim().length() == added.length());
-
-    std::string removed = widen::removeDelimFromEnd(added);
-    REQUIRE(removed == s);
+    s = "12345";
+    res = widen::addLengthToStringFront(s);
+    len = widen::convertLengthString(res.substr(0, 4));
+    REQUIRE(len == 5);
 }

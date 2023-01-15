@@ -1,8 +1,8 @@
 #include "widen/common/log.hpp"
 #include "widen/common/message_addon.hpp"
 #include "widen/messages.pb.h"
-#include "widen/worker/message_listener.hpp"
-#include "widen/worker/handlers/joinRequestHandler.hpp"
+#include "widen/node/message_listener.hpp"
+#include "widen/node/handlers/joinRequestHandler.hpp"
 
 namespace widen
 {

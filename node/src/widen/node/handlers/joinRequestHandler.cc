@@ -1,4 +1,4 @@
-#include "widen/worker/handlers/joinRequestHandler.hpp"
+#include "widen/node/handlers/joinRequestHandler.hpp"
 #include "widen/common/log.hpp"
 
 namespace widen

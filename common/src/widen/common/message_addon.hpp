@@ -1,13 +1,14 @@
 #pragma once
-#include <iostream>
+#include <string>
+#include <utility>
 
 #include "widen/common/fmt.hpp"
 
+// TODO:
+//     - make endianess platform-independent
+
 namespace widen
 {
-    std::string getMessageDelim();
-
-    std::string addDelimToEnd(std::string s);
-
-    std::string removeDelimFromEnd(const std::string &s);
+    int convertLengthString(const std::string &);
+    std::string addLengthToStringFront(const std::string &);
 }

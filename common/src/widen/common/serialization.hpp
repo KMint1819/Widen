@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include "widen/common/fmt.hpp"
 
 // TODO: be aware of endianess
 namespace widen
@@ -9,6 +10,7 @@ namespace widen
     std::string serializeNumber(T number)
     {
         u_char *bytePointer = reinterpret_cast<u_char *>(&number);
+
         return {bytePointer, bytePointer + sizeof(T)};
     }
 

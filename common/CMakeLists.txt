@@ -14,6 +14,8 @@ set(HEADERS
     src/widen/common/message_addon.hpp
     src/widen/common/serialization.hpp
     src/widen/common/utils.hpp
+    src/widen/common/proto_wrapper/identifier.hpp
+    src/widen/common/proto_wrapper/proto_wrapper.hpp
 )
 target_sources(widen_common
     PRIVATE

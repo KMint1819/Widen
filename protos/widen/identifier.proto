@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package widen;
+package widen.proto;
 
 message IdentifierProto {
     string ip = 1;

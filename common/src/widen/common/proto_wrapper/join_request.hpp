@@ -1,12 +1,13 @@
-#pragma once
 #include "widen/common/proto_wrapper/proto_wrapper.hpp"
+#include "widen/common/proto_wrapper/identifier.hpp"
 
 namespace widen
 {
-    class Identifier final : public ProtoWrapper
+    class JoinRequest final : public ProtoWrapper
     {
     public:
-        Identifier(const std::string &ip, const int64_t timestamp);
+        JoinRequest(const std::string &ip, const int64_t timestamp);
+        JoinRequest(const Identifier &identifier);
 
         std::string toString() const override;
 
@@ -16,6 +17,7 @@ namespace widen
         std::string rawSerialize() const override;
 
     private:
-        proto::IdentifierProto proto;
+        proto::JoinRequestProto proto;
+        Identifier identifer;
     };
 }

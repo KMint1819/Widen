@@ -2,12 +2,12 @@ syntax = "proto3";
 
 package widen;
 
-message Gossip {
+message GossipProto {
     oneof GossipTypes {
-        GossipNewMember gossipNewMember = 1;
+        GossipNewMemberProto gossipNewMember = 1;
     }
 }
 
-message GossipNewMember {
+message GossipNewMemberProto {
     int32 id = 1;
 }

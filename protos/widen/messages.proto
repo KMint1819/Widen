@@ -4,32 +4,23 @@ package widen;
 
 import "identifier.proto";
 
-message Message {
-    oneof Type {
-        JoinRequest joinRequest = 1;
-        JoinMsg joinMsg = 2;
-        HeartbeatMsg heartbeatMsg= 3;
-        DeadMsg deadMsg= 4;
-    }
+message JoinRequestProto {
+    IdentifierProto identifier = 1;
 }
 
-message JoinRequest {
-    Identifier identifier = 1;
+message JoinReplyProto {
+    repeated IdentifierProto identifiers = 1;
 }
 
-message JoinReply {
-    repeated Identifier identifiers = 1;
+message JoinMsgProto {
+    IdentifierProto identifier = 1;
 }
 
-message JoinMsg {
-    Identifier identifier = 1;
-}
-
-message HeartbeatMsg {
-    Identifier identifier = 1;
+message HeartbeatMsgProto {
+    IdentifierProto identifier = 1;
     int64 timestamp = 2;
 }
 
-message DeadMsg {
-    Identifier identifier = 1;
+message DeadMsgProto {
+    IdentifierProto identifier = 1;
 }

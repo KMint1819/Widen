@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package widen;
 
-message Identifier{
+message IdentifierProto {
     string ip = 1;
     int64 initTimestamp = 2;
 }

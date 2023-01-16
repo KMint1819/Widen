@@ -3,15 +3,15 @@ set(SOURCES
     src/widen/common/config.cc
     src/widen/common/exception.cc
     src/widen/common/log.cc
-    src/widen/common/message_addon.cc
     src/widen/common/utils.cc
+    src/widen/common/proto_wrapper/identifier.cc
+    src/widen/common/proto_wrapper/proto_wrapper.cc
 )
 set(HEADERS
     src/widen/common/config.hpp
     src/widen/common/exception.hpp
     src/widen/common/fmt.hpp
     src/widen/common/log.hpp
-    src/widen/common/message_addon.hpp
     src/widen/common/serialization.hpp
     src/widen/common/utils.hpp
     src/widen/common/proto_wrapper/identifier.hpp

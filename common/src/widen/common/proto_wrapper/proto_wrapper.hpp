@@ -19,13 +19,7 @@ namespace widen
          *
          * @return std::pair<std::string, std::string>
          */
-        virtual std::string serialize() const
-        {
-            std::string body = rawSerialize();
-            uint32_t bodyLength = body.length();
-            std::string header = serializeNumber(bodyLength);
-            return header + body;
-        }
+        virtual std::string serialize() const;
 
         /**
          * @brief Deserialize the ***body*** to the children class

@@ -1,19 +1,21 @@
 add_library(widen_common)
 set(SOURCES
-    src/widen/common/log.cc
     src/widen/common/config.cc
-    src/widen/common/utils.cc
+    src/widen/common/exception.cc
+    src/widen/common/log.cc
     src/widen/common/message_addon.cc
+    src/widen/common/utils.cc
 )
 set(HEADERS
+    src/widen/common/config.hpp
+    src/widen/common/exception.hpp
     src/widen/common/fmt.hpp
     src/widen/common/log.hpp
-    src/widen/common/config.hpp
-    src/widen/common/utils.hpp
     src/widen/common/message_addon.hpp
+    src/widen/common/utils.hpp
 )
 target_sources(widen_common
-PRIVATE
+    PRIVATE
     ${SOURCES}
     ${HEADERS}
 )
@@ -23,14 +25,14 @@ find_package(Threads REQUIRED)
 find_package(yaml-cpp CONFIG REQUIRED)
 
 target_include_directories(widen_common
-PUBLIC
+    PUBLIC
     ${PROJECT_SOURCE_DIR}/3rdparty/
     ${PROJECT_BINARY_DIR}/protos/
     ${YAML_CPP_INCLUDE_DIR}
     src
 )
 target_link_libraries(widen_common
-PUBLIC
+    PUBLIC
     Threads::Threads
     ${YAML_CPP_LIBRARIES}
     widen_protos

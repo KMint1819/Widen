@@ -3,8 +3,9 @@ find_package(Protobuf REQUIRED)
 
 set(PROTOS
     general.proto
-    messages.proto
     gossip.proto
+    identifier.proto
+    messages.proto
 )
 target_sources(widen_protos
     PRIVATE

@@ -40,6 +40,8 @@ A distributed system for deep learning model inference
 
 ## TODOs
 - clang-tidy
+- asio
+    - coroutines
 - node
     - Combine header and body to a class
 - distributed unit tests

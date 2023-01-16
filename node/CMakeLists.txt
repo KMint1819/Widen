@@ -2,13 +2,15 @@ add_executable(widen_node)
 
 set(SOURCES
     src/widen/node/main.cc
-    src/widen/node/node.cc
+    src/widen/node/memberlist.cc
     src/widen/node/message_listener.cc
+    src/widen/node/node.cc
     src/widen/node/handlers/joinRequestHandler.cc
 )
 set(HEADERS
     src/widen/node/node.hpp
     src/widen/node/message_listener.hpp
+    src/widen/node/memberlist.hpp
     src/widen/node/handlers/joinRequestHandler.hpp
 )
 target_sources(widen_node

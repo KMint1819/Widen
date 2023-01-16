@@ -9,7 +9,7 @@ namespace widen
     }
     void JoinRequestHandler::start()
     {
-        WIDEN_TRACE("Received request from {}/{}: {}",
+        WIDEN_TRACE("Received join request from {}/{}:\n{}",
                     socket.remote_endpoint().address().to_string(),
                     socket.remote_endpoint().port(),
                     joinReq.DebugString());

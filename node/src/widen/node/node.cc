@@ -33,12 +33,18 @@ namespace widen
     {
         if (introducerEndpoints.size() != 0)
         {
-            joinViaIntroducer();
+            memberlist = joinViaIntroducer();
         }
+        else
+        {
+            Identifier myself;
+            WIDEN_TRACE("Self hostname: {}", asio::ip::host_name());
+        }
+        WIDEN_INFO("Initial memberlist: \n\n{}\n", memberlistDescription(memberlist));
         mainLoop();
     }
 
-    std::vector<Identifier> Node::joinViaIntroducer()
+    Memberlist Node::joinViaIntroducer()
     {
         WIDEN_TRACE("Joining via introducer!");
         tcp::socket socket(ioc);
@@ -47,37 +53,38 @@ namespace widen
                    socket.remote_endpoint().address().to_v4().to_string(),
                    socket.remote_endpoint().port());
 
-        std::string ip = socket.local_endpoint()
-                             .address()
-                             .to_v4()
-                             .to_string();
-        long timestamp = getTimestamp();
-        Message message = constructJoinMessage(ip, timestamp);
+        Message message = constructJoinMessage(socket.local_endpoint()
+                                                   .address()
+                                                   .to_v4()
+                                                   .to_string(),
+                                               getTimestamp());
         WIDEN_TRACE("Join string: {}", message.DebugString());
 
         std::string sendString = message.SerializeAsString();
         sendString = widen::addLengthToStringFront(sendString);
 
-        std::size_t written = socket.write_some(asio::buffer(sendString));
-        WIDEN_TRACE("node wrote {} bytes to join", written);
+        int nBytes = socket.write_some(asio::buffer(sendString));
+        WIDEN_TRACE("node wrote {} bytes to join", nBytes);
 
         //
         std::array<char, 1024> recvBuf;
-        int receivedBytes = asio::read(socket, asio::buffer(recvBuf, 4));
-        WIDEN_TRACE("Received {} bytes as header", receivedBytes);
+        nBytes = asio::read(socket, asio::buffer(recvBuf, 4));
+        WIDEN_TRACE("Received {} bytes as header", nBytes);
 
         std::string lengthString(recvBuf.begin(), recvBuf.begin() + 4);
         int length = widen::convertLengthString(lengthString);
 
-        receivedBytes = asio::read(socket, asio::buffer(recvBuf, length));
-        WIDEN_TRACE("Received {} from introducer", receivedBytes);
+        nBytes = asio::read(socket, asio::buffer(recvBuf, length));
+        WIDEN_TRACE("Received {} from introducer", nBytes);
 
-        std::string recvString(recvBuf.begin(), recvBuf.begin() + receivedBytes);
+        std::string recvString(recvBuf.begin(), recvBuf.begin() + nBytes);
         JoinReply joinReply;
         joinReply.ParseFromString(recvString);
 
         auto rawIdentifiers = joinReply.identifiers();
-        return std::vector<Identifier>(rawIdentifiers.begin(), rawIdentifiers.end());
+        std::vector<Identifier> identifierVector(rawIdentifiers.begin(), rawIdentifiers.end());
+        Memberlist tmp(identifierVector.begin(), identifierVector.end());
+        return tmp;
     }
 
     Message Node::constructJoinMessage(std::string ip, long timestamp)

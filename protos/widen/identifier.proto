@@ -1,0 +1,8 @@
+syntax = "proto3";
+
+package widen;
+
+message Identifier{
+    string ip = 1;
+    int64 initTimestamp = 2;
+}

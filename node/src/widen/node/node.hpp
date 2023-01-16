@@ -6,6 +6,7 @@
 
 #include <asio.hpp>
 
+#include "widen/node/memberlist.hpp"
 #include "widen/messages.pb.h"
 
 namespace widen
@@ -22,7 +23,7 @@ namespace widen
         asio::io_context ioc;
         tcp::resolver::results_type introducerEndpoints;
 
-        std::vector<Identifier> joinViaIntroducer();
+        Memberlist joinViaIntroducer();
         Message constructJoinMessage(std::string ip, long timestamp);
 
         void mainLoop();

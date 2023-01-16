@@ -12,6 +12,7 @@ set(HEADERS
     src/widen/common/fmt.hpp
     src/widen/common/log.hpp
     src/widen/common/message_addon.hpp
+    src/widen/common/serialization.hpp
     src/widen/common/utils.hpp
 )
 target_sources(widen_common

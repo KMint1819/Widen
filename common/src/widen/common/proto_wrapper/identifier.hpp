@@ -12,6 +12,10 @@ namespace widen
 
         void deserialize(const std::string &byteString) override;
 
+        std::string ip() const;
+
+        int64_t inittimestamp() const;
+
     protected:
         std::string rawSerialize() const override;
 

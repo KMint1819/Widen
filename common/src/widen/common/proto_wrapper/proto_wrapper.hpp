@@ -9,6 +9,11 @@
 
 namespace widen
 {
+    /**
+     * @brief Base wrapper class that every protobuf file should have one
+     * wrapper class inherit to this
+     *
+     */
     class ProtoWrapper
     {
     public:
@@ -17,12 +22,12 @@ namespace widen
         /**
          * @brief Serialize ProtoWrapper to length string + body string
          *
-         * @return std::pair<std::string, std::string>
+         * @return length string + body string
          */
         virtual std::string serialize() const;
 
         /**
-         * @brief Deserialize the ***body*** to the children class
+         * @brief Deserialize the ***body*** string to the children class
          *
          */
         virtual void deserialize(const std::string &) = 0;

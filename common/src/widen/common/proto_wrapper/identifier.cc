@@ -18,6 +18,16 @@ namespace widen
         proto.ParseFromString(byteString);
     }
 
+    std::string Identifier::ip() const
+    {
+        return proto.ip();
+    }
+
+    int64_t Identifier::inittimestamp() const
+    {
+        return proto.inittimestamp();
+    }
+
     std::string Identifier::rawSerialize() const
     {
         std::string byteString;

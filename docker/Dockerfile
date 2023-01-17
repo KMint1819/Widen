@@ -9,8 +9,7 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
     git \
     cmake \
     wget \
-    iputils-ping \
-    net-tools
+    iputils-ping 
 
 # Install protobuf
 WORKDIR /opt

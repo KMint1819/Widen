@@ -6,7 +6,8 @@
 #include "widen/node/distributed_fs/distributed_fs.hpp"
 #include "widen/node/failure_detection/failure_detector.hpp"
 #include "widen/node/introducer/introducer.hpp"
-#include "widen/common/proto_wrapper/protomsg_wrapper.hpp"
+#include "widen/common/proto_wrapper/join_response.hpp"
+
 #include <fstream>
 #include <chrono>
 
@@ -88,12 +89,10 @@ namespace widen
 
         buffer = {recvBuf.begin(), recvBuf.begin() + nBytes};
         std::string recvString(recvBuf.begin(), recvBuf.begin() + nBytes);
-        JoinReply joinReply;
-        joinReply.ParseFromString(recvString);
 
-        // auto rawIdentifiers = joinReply.identifiers();
-        // std::vector<Identifier> identifierVector(rawIdentifiers.begin(), rawIdentifiers.end());
-        // Memberlist tmp(identifierVector.begin(), identifierVector.end());
-        // return tmp;
+        auto res = JoinResponse::buildDeserialize(recvString);
+
+        auto rawIdentifiers = res.getIdentifiers();
+        return {rawIdentifiers.begin(), rawIdentifiers.end()};
     }
 }

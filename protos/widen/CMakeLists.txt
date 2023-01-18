@@ -2,10 +2,10 @@ add_library(widen_protos)
 find_package(Protobuf REQUIRED)
 
 set(PROTOS
+    distributed_fs.proto
+    failure_detection.proto
     general.proto
-    gossip.proto
-    identifier.proto
-    messages.proto
+    introducer.proto
 )
 target_sources(widen_protos
     PRIVATE

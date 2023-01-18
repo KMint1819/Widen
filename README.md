@@ -42,6 +42,7 @@ A distributed system for deep learning model inference
 - clang-tidy
 - asio
     - coroutines
+- move proto_wrappers into protos/
 - node
     - Combine header and body to a class
 - distributed unit tests

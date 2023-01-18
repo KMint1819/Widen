@@ -6,12 +6,12 @@
 // TODO: be aware of endianess
 namespace widen
 {
-    template <typename T>
-    std::string serializeNumber(T number)
+    // template <typename T>
+    inline std::string serialize4BytesNumber(uint32_t number)
     {
         u_char *bytePointer = reinterpret_cast<u_char *>(&number);
 
-        return {bytePointer, bytePointer + sizeof(T)};
+        return {bytePointer, bytePointer + sizeof(uint32_t)};
     }
 
     template <typename T>

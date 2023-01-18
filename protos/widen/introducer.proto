@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package widen.proto.introducer;
+
+import "general.proto";
+
+
+message JoinRequestProto {
+    general.IdentifierProto identifier = 1;
+}
+
+message JoinReplyProto {
+    repeated general.IdentifierProto identifiers = 1;
+}

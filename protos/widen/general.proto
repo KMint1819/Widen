@@ -1,3 +1,13 @@
 syntax = "proto3";
 
-package widen.proto;
+package widen.proto.general;
+
+message HeaderProto {
+    string type = 1;
+    uint32 body_length = 2;
+}
+
+message IdentifierProto {
+    string ip = 1;
+    int64 init_timestamp = 2;
+}

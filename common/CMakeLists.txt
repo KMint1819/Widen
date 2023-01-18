@@ -5,7 +5,7 @@ set(SOURCES
     src/widen/common/log.cc
     src/widen/common/utils.cc
     src/widen/common/proto_wrapper/identifier.cc
-    src/widen/common/proto_wrapper/proto_wrapper.cc
+    src/widen/common/proto_wrapper/join_request.cc
 )
 set(HEADERS
     src/widen/common/config.hpp
@@ -15,7 +15,8 @@ set(HEADERS
     src/widen/common/serialization.hpp
     src/widen/common/utils.hpp
     src/widen/common/proto_wrapper/identifier.hpp
-    src/widen/common/proto_wrapper/proto_wrapper.hpp
+    src/widen/common/proto_wrapper/join_request.hpp
+    src/widen/common/proto_wrapper/protomsg_wrapper.hpp
 )
 target_sources(widen_common
     PRIVATE

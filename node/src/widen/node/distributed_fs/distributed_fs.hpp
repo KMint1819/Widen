@@ -2,7 +2,7 @@
 
 namespace widen
 {
-    class FailureDetector
+    class DistributedFS
     {
         void start();
     };

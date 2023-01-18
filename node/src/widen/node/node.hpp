@@ -7,7 +7,7 @@
 #include <asio.hpp>
 
 #include "widen/node/memberlist.hpp"
-#include "widen/messages.pb.h"
+#include "widen/common/proto_wrapper/join_request.hpp"
 
 namespace widen
 {
@@ -24,8 +24,6 @@ namespace widen
         tcp::resolver::results_type introducerEndpoints;
 
         Memberlist joinViaIntroducer();
-        Message constructJoinMessage(std::string ip, long timestamp);
-
-        void mainLoop();
+        JoinRequest constructJoinRequest(std::string ip, long timestamp);
     };
 }

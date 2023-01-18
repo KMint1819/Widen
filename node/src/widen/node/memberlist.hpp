@@ -1,15 +1,16 @@
 #pragma once
 
-#include <set>
+#include <deque>
 
+#include "widen/common/proto_wrapper/identifier.hpp"
 #include "widen/common/fmt.hpp"
-#include "widen/messages.pb.h"
 
-// TODO: Implement own memberlist with these member functions and iterators
+// TODO: Implement own singleton memberlist with these member functions and iterators
 namespace widen
 {
-    typedef std::set<Identifier> Memberlist;
-    static Memberlist memberlist;
+    using Member = Identifier;
+    using Memberlist = std::deque<Member>;
+    Memberlist memberlist;
 
     std::string memberlistDescription(const Memberlist &memberlist)
     {
@@ -18,7 +19,7 @@ namespace widen
         {
             s += fmt::format("Member ip: {}, initTimestamp: {}\n",
                              identifier.ip(),
-                             identifier.inittimestamp());
+                             identifier.initTimestamp());
         }
         s.pop_back();
         return s;

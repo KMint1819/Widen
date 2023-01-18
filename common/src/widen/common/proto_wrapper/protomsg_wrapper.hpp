@@ -55,4 +55,18 @@ namespace widen
     protected:
         virtual std::string rawSerialize() const = 0;
     };
+
+    class Header final : public ProtoWrapper
+    {
+        using Proto = proto::general::HeaderProto;
+
+    public:
+        Header(const std::string &);
+        std::string getType() const;
+        uint32_t getBodyLength() const;
+        std::string toString() const override;
+
+    private:
+        Proto proto;
+    };
 }

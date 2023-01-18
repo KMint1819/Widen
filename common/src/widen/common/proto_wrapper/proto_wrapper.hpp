@@ -3,6 +3,10 @@
 
 namespace widen
 {
+    /**
+     * @brief Base class for all protobuf wrapper.
+     *
+     */
     class ProtoWrapper
     {
     public:

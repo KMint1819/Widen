@@ -5,6 +5,7 @@ set(PROTOS
     distributed_fs.proto
     failure_detection.proto
     general.proto
+    identifier.proto
     introducer.proto
 )
 target_sources(widen_protos

@@ -6,7 +6,8 @@
 #include "widen/node/distributed_fs/distributed_fs.hpp"
 #include "widen/node/failure_detection/failure_detector.hpp"
 #include "widen/node/introducer/introducer.hpp"
-#include "widen/common/proto_wrapper/protomsg_wrapper.hpp"
+#include "widen/common/proto_wrapper/join_response.hpp"
+
 #include <fstream>
 #include <chrono>
 
@@ -45,11 +46,11 @@ namespace widen
 
         DistributedFS distributed_fs;
         FailureDetector detector;
-        Introducer introducer;
+        // Introducer introducer;
 
         distributed_fs.start();
         detector.start();
-        introducer.start();
+        // introducer.start();
 
         ioc.run();
         WIDEN_WARN("Node exiting...");
@@ -64,15 +65,15 @@ namespace widen
                    socket.remote_endpoint().address().to_v4().to_string(),
                    socket.remote_endpoint().port());
 
-        JoinRequest req = constructJoinMessage(socket.local_endpoint()
-                                                   .address()
-                                                   .to_v4()
-                                                   .to_string(),
-                                               getTimestamp());
+        JoinRequest req({socket.local_endpoint()
+                             .address()
+                             .to_v4()
+                             .to_string(),
+                         getTimestamp()});
         WIDEN_TRACE("Join string: {}", req.toString());
         std::string buffer = req.serialize();
 
-        int nBytes = socket.write_some(asio::buffer(sendString));
+        int nBytes = socket.write_some(asio::buffer(buffer));
         WIDEN_TRACE("node wrote {} bytes to join", nBytes);
 
         // //
@@ -88,26 +89,10 @@ namespace widen
 
         buffer = {recvBuf.begin(), recvBuf.begin() + nBytes};
         std::string recvString(recvBuf.begin(), recvBuf.begin() + nBytes);
-        JoinReply joinReply;
-        joinReply.ParseFromString(recvString);
 
-        // auto rawIdentifiers = joinReply.identifiers();
-        // std::vector<Identifier> identifierVector(rawIdentifiers.begin(), rawIdentifiers.end());
-        // Memberlist tmp(identifierVector.begin(), identifierVector.end());
-        // return tmp;
-    }
+        auto res = JoinResponse::buildDeserialize(recvString);
 
-    Message Node::constructJoinMessage(std::string ip, long timestamp)
-    {
-        Identifier *identifier = new Identifier;
-        identifier->set_ip(ip);
-        identifier->set_inittimestamp(timestamp);
-
-        JoinRequest *joinReq = new JoinRequest;
-        joinReq->set_allocated_identifier(identifier);
-
-        Message message;
-        message.set_allocated_joinrequest(joinReq);
-        return std::move(message);
+        auto rawIdentifiers = res.getIdentifiers();
+        return {rawIdentifiers.begin(), rawIdentifiers.end()};
     }
 }

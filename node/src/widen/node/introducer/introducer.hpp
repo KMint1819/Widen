@@ -4,10 +4,10 @@
 namespace widen
 {
     using asio::ip::tcp;
-    class MessageListener
+    class Introducer
     {
     public:
-        MessageListener(asio::io_context &ioc, int port);
+        Introducer(asio::io_context &ioc, int port);
         void start();
 
     private:
@@ -19,18 +19,18 @@ namespace widen
         void doAccept();
     };
 
-    class MessageSession : public std::enable_shared_from_this<MessageSession>
-    {
-    public:
-        MessageSession(tcp::socket socket);
-        void start();
+    // class MessageSession : public std::enable_shared_from_this<MessageSession>
+    // {
+    // public:
+    //     MessageSession(tcp::socket socket);
+    //     void start();
 
-    private:
-        tcp::socket socket;
-        std::array<char, 8192> recvBuf;
+    // private:
+    //     tcp::socket socket;
+    //     std::array<char, 8192> recvBuf;
 
-        void doReadHeader();
-        void doReadBody(int);
-        void handleMessage(const std::string &);
-    };
+    //     void doReadHeader();
+    //     void doReadBody(int);
+    //     void handleMessage(const std::string &);
+    // };
 }

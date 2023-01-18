@@ -3,10 +3,19 @@
 namespace widen
 {
 
+    JoinRequest::JoinRequest(){};
+
     JoinRequest::JoinRequest(const Identifier &identifier)
         : identifier(identifier)
     {
         proto.set_allocated_identifier(new Identifier::Proto(identifier.getProto()));
+    }
+
+    JoinRequest JoinRequest::buildDeserialize(const std::string &serialized)
+    {
+        JoinRequest req;
+        req.deserialize(serialized);
+        return std::move(req);
     }
 
     Identifier JoinRequest::getIdentifier() const

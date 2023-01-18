@@ -6,6 +6,8 @@ set(SOURCES
     src/widen/common/utils.cc
     src/widen/common/proto_wrapper/identifier.cc
     src/widen/common/proto_wrapper/join_request.cc
+    src/widen/common/proto_wrapper/join_response.cc
+    src/widen/common/proto_wrapper/proto_message.cc
 )
 set(HEADERS
     src/widen/common/config.hpp
@@ -16,7 +18,9 @@ set(HEADERS
     src/widen/common/utils.hpp
     src/widen/common/proto_wrapper/identifier.hpp
     src/widen/common/proto_wrapper/join_request.hpp
-    src/widen/common/proto_wrapper/protomsg_wrapper.hpp
+    src/widen/common/proto_wrapper/join_response.hpp
+    src/widen/common/proto_wrapper/proto_message.hpp
+    src/widen/common/proto_wrapper/proto_wrapper.hpp
 )
 target_sources(widen_common
     PRIVATE

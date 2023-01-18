@@ -4,6 +4,7 @@ namespace widen
 {
     class FailureDetector
     {
+        public:
         void start();
     };
 }

@@ -1,25 +1,28 @@
 #pragma once
-#include "widen/common/proto_wrapper/protomsg_wrapper.hpp"
+#include "widen/common/proto_wrapper/proto_message.hpp"
 #include "widen/common/proto_wrapper/identifier.hpp"
 #include "widen/introducer.pb.h"
 
 namespace widen
 {
-    class JoinRequest final : public ProtomsgWrapper
+    class JoinRequest final : public ProtoMessage
     {
         using Proto = proto::introducer::JoinRequestProto;
 
     public:
+        JoinRequest();
+        JoinRequest(const Proto &);
         JoinRequest(const Identifier &);
-        Identifier getIdentifier() const;
-        std::string toString() const override;
-        void deserialize(const std::string &);
-        std::string rawSerialize() const;
+        static JoinRequest buildDeserialize(const std::string &);
 
-        inline std::string getType() const override { return "JOIN"; }
+        Identifier getIdentifier() const;
+
+        std::string toString() const override;
+        std::string rawSerialize() const override;
 
     private:
         Proto proto;
         Identifier identifier;
+        void deserialize(const std::string &);
     };
 }

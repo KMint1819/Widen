@@ -1,7 +1,7 @@
 #pragma once
 #include <string>
 
-#include "widen/general.pb.h"
+#include "widen/identifier.pb.h"
 #include "widen/common/proto_wrapper/proto_wrapper.hpp"
 
 namespace widen
@@ -9,8 +9,8 @@ namespace widen
     class Identifier final : public ProtoWrapper
     {
     public:
-        using Proto = proto::general::IdentifierProto;
-
+        using Proto = proto::IdentifierProto;
+        Identifier();
         Identifier(const Proto &);
         Identifier(const std::string &ip, const int64_t timestamp);
 

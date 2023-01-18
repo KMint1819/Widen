@@ -45,11 +45,11 @@ namespace widen
 
         DistributedFS distributed_fs;
         FailureDetector detector;
-        Introducer introducer;
+        // Introducer introducer;
 
         distributed_fs.start();
         detector.start();
-        introducer.start();
+        // introducer.start();
 
         ioc.run();
         WIDEN_WARN("Node exiting...");

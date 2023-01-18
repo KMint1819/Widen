@@ -64,15 +64,15 @@ namespace widen
                    socket.remote_endpoint().address().to_v4().to_string(),
                    socket.remote_endpoint().port());
 
-        JoinRequest req = constructJoinMessage(socket.local_endpoint()
-                                                   .address()
-                                                   .to_v4()
-                                                   .to_string(),
-                                               getTimestamp());
+        JoinRequest req({socket.local_endpoint()
+                             .address()
+                             .to_v4()
+                             .to_string(),
+                         getTimestamp()});
         WIDEN_TRACE("Join string: {}", req.toString());
         std::string buffer = req.serialize();
 
-        int nBytes = socket.write_some(asio::buffer(sendString));
+        int nBytes = socket.write_some(asio::buffer(buffer));
         WIDEN_TRACE("node wrote {} bytes to join", nBytes);
 
         // //
@@ -95,19 +95,5 @@ namespace widen
         // std::vector<Identifier> identifierVector(rawIdentifiers.begin(), rawIdentifiers.end());
         // Memberlist tmp(identifierVector.begin(), identifierVector.end());
         // return tmp;
-    }
-
-    Message Node::constructJoinMessage(std::string ip, long timestamp)
-    {
-        Identifier *identifier = new Identifier;
-        identifier->set_ip(ip);
-        identifier->set_inittimestamp(timestamp);
-
-        JoinRequest *joinReq = new JoinRequest;
-        joinReq->set_allocated_identifier(identifier);
-
-        Message message;
-        message.set_allocated_joinrequest(joinReq);
-        return std::move(message);
     }
 }

@@ -24,6 +24,5 @@ namespace widen
         tcp::resolver::results_type introducerEndpoints;
 
         Memberlist joinViaIntroducer();
-        JoinRequest constructJoinRequest(std::string ip, long timestamp);
     };
 }

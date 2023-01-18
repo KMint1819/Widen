@@ -24,21 +24,7 @@ namespace widen
          *
          * @return header length string + header string + body string
          */
-        virtual std::string serialize() const
-        {
-            std::string body = rawSerialize();
-            uint32_t bodyLength = body.length();
-
-            proto::general::HeaderProto header;
-            header.set_body_length(bodyLength);
-            header.set_type(getType());
-
-            std::string headerString;
-            header.SerializeToString(&headerString);
-            std::string headerLengthString = serialize4BytesNumber(headerString.length());
-
-            return headerLengthString + headerString + body;
-        }
+        virtual std::string serialize() const;
 
         virtual std::string getType() const = 0;
 

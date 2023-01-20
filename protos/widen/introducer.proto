@@ -7,14 +7,15 @@ import "identifier.proto";
 message Request
 {
     oneof type {
-        JoinRequestProto joinRequestProto = 1;
+        JoinRequestProto join_request_proto= 1;
     }
 }
 
 message JoinRequestProto {
-    IdentifierProto identifier = 1;
+    int64 init_timestamp = 1;
 }
 
 message JoinResponseProto {
-    repeated IdentifierProto identifiers = 1;
+    string requester_ip = 1;
+    repeated IdentifierProto identifiers = 2;
 }

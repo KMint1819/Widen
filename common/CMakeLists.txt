@@ -35,9 +35,11 @@ find_package(yaml-cpp CONFIG REQUIRED)
 target_include_directories(widen_common
     PUBLIC
     ${PROJECT_SOURCE_DIR}/3rdparty/
-    ${PROJECT_BINARY_DIR}/protos/
     ${YAML_CPP_INCLUDE_DIR}
     src
+
+    PRIVATE
+    ${PROJECT_BINARY_DIR}/protos/
 )
 target_link_libraries(widen_common
     PUBLIC

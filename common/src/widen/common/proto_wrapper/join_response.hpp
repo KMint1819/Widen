@@ -13,9 +13,11 @@ namespace widen
     public:
         JoinResponse();
         JoinResponse(const Proto &);
-        JoinResponse(const std::vector<Identifier> &);
+        JoinResponse(const std::string &ip,
+                     const std::vector<Identifier> &identifiers);
         static JoinResponse buildDeserialize(const std::string &);
 
+        std::string getRequesterIp() const;
         std::vector<Identifier> getIdentifiers() const;
 
         std::string toString() const override;

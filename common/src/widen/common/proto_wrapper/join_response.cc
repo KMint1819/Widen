@@ -9,7 +9,7 @@ namespace widen
         : proto(proto)
     {
     }
-    JoinResponse::JoinResponse(const std::vector<Identifier> &identifiers)
+    JoinResponse::JoinResponse(const std::string &ip, const std::vector<Identifier> &identifiers)
         : identifiers(identifiers)
     {
         proto.clear_identifiers();
@@ -19,6 +19,7 @@ namespace widen
             data->set_ip(identifier.getIp());
             data->set_init_timestamp(identifier.getInitTimestamp());
         }
+        proto.set_requester_ip(ip);
     }
 
     JoinResponse JoinResponse::buildDeserialize(const std::string &serialized)
@@ -26,6 +27,11 @@ namespace widen
         JoinResponse res;
         res.deserialize(serialized);
         return std::move(res);
+    }
+
+    std::string JoinResponse::getRequesterIp() const
+    {
+        return proto.requester_ip();
     }
 
     std::vector<Identifier> JoinResponse::getIdentifiers() const

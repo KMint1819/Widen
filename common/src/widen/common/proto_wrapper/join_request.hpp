@@ -12,17 +12,16 @@ namespace widen
     public:
         JoinRequest();
         JoinRequest(const Proto &);
-        JoinRequest(const Identifier &);
+        JoinRequest(const int64_t initTimestamp);
         static JoinRequest buildDeserialize(const std::string &);
 
-        Identifier getIdentifier() const;
+        int64_t getInitTimestamp() const;
 
         std::string toString() const override;
         std::string rawSerialize() const override;
 
     private:
         Proto proto;
-        Identifier identifier;
         void deserialize(const std::string &);
     };
 }

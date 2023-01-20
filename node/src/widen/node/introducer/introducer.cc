@@ -1,37 +1,47 @@
 #include "widen/common/log.hpp"
-// #include "widen/node/message_listener.hpp"
+#include "widen/node/introducer/introducer.hpp"
 // #include "widen/node/handlers/joinRequestHandler.hpp"
 
 namespace widen
 {
-    // MessageListener::MessageListener(asio::io_context &ioc, int port)
-    //     : ioc(ioc),
-    //       acceptor(ioc, tcp::endpoint(tcp::v4(), port)),
-    //       socket(ioc),
-    //       port(port)
-    // {
-    // }
+    Introducer::Introducer(asio::io_context &ioc, int port)
+        : ioc(ioc),
+          acceptor(ioc, tcp::endpoint(tcp::v4(), port)),
+          socket(ioc),
+          port(port)
+    {
+    }
 
-    // void MessageListener::start()
-    // {
-    //     doAccept();
-    // }
+    Introducer::Introducer(asio::io_context &ioc, int port, IpChangeCallback onIpChange)
+        : Introducer(ioc, port)
+    {
+        this->onIpChange = onIpChange;
+    }
 
-    // void MessageListener::doAccept()
-    // {
-    //     acceptor.async_accept(socket, [this](asio::error_code ec)
-    //                           {
-    //         if(ec)
-    //         {
-    //             WIDEN_ERROR("Error accept: {}", ec.message());
-    //         }
-    //         else
-    //         {
-    //             WIDEN_TRACE("Accepting: {}", socket.remote_endpoint().address().to_string());
-    //             std::make_shared<MessageSession>(std::move(socket))->start();
-    //         }
-    //         doAccept(); });
-    // }
+    void Introducer::start()
+    {
+        doAccept();
+    }
+
+    void Introducer::doAccept()
+    {
+        acceptor.async_accept(socket, [this](asio::error_code ec)
+                              {
+            if(ec)
+            {
+                WIDEN_ERROR("Error accept: {}", ec.message());
+            }
+            else
+            {
+                WIDEN_TRACE("Accepting: {}", socket.remote_endpoint().address().to_string());
+                if(onIpChange)
+                {
+                    onIpChange.value()(socket.local_endpoint().address().to_v4());
+                }
+                std::make_shared<Session>(std::move(socket))->start();
+            }
+            doAccept(); });
+    }
 
     // MessageSession::MessageSession(tcp::socket socket)
     //     : socket(std::move(socket))

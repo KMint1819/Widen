@@ -10,7 +10,9 @@ namespace widen
     {
         namespace port
         {
-            extern int message;
+            extern int introducer;
+            extern int failureDetection;
+            extern int distributedFS;
         }
 
         void loadConfigFile(std::filesystem::path);

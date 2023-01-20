@@ -11,10 +11,12 @@
 
 namespace widen
 {
-    using asio::ip::tcp;
-
     class Node
     {
+
+        using address_v4 = asio::ip::address_v4;
+        using tcp = asio::ip::tcp;
+
     public:
         Node(int argc, char **argv);
         void start();
@@ -22,6 +24,7 @@ namespace widen
     private:
         asio::io_context ioc;
         tcp::resolver::results_type introducerEndpoints;
+        address_v4 selfAddr;
 
         Memberlist joinViaIntroducer();
     };

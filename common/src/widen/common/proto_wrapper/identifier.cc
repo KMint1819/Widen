@@ -2,6 +2,8 @@
 
 namespace widen
 {
+    Identifier::Identifier() {}
+
     Identifier::Identifier(const std::string &ip, const int64_t timestamp)
     {
         setIp(ip);

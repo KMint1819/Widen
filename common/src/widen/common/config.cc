@@ -9,7 +9,9 @@ namespace widen
     {
         namespace port
         {
-            int message = 10101;
+            int introducer = 10101;
+            int failureDetection = 10102;
+            int distributedFS = 10103;
         }
 
         void loadConfigFile(std::filesystem::path configFile)
@@ -18,7 +20,9 @@ namespace widen
             try
             {
                 YAML::Node node = YAML::LoadFile(configFile.string());
-                port::message = node["port"]["message"].as<int>();
+                port::introducer = node["port"]["introducer"].as<int>();
+                port::failureDetection = node["port"]["failure_detection"].as<int>();
+                port::distributedFS = node["port"]["distributed_fs"].as<int>();
             }
             catch (YAML::BadFile &e)
             {

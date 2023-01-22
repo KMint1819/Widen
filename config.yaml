@@ -1,3 +1,5 @@
 ---
 port:
-  message: 10000
+  introducer: 10000
+  failure_detection: 10001
+  distributed_fs: 10002

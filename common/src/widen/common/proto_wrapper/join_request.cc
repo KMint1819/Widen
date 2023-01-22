@@ -3,15 +3,23 @@
 namespace widen
 {
 
-    JoinRequest::JoinRequest(const Identifier &identifier)
-        : identifier(identifier)
+    JoinRequest::JoinRequest(){};
+
+    JoinRequest::JoinRequest(const int64_t initTimestamp)
     {
-        proto.set_allocated_identifier(new Identifier::Proto(identifier.getProto()));
+        proto.set_init_timestamp(initTimestamp);
     }
 
-    Identifier JoinRequest::getIdentifier() const
+    JoinRequest JoinRequest::buildDeserialize(const std::string &serialized)
     {
-        return identifier;
+        JoinRequest req;
+        req.deserialize(serialized);
+        return std::move(req);
+    }
+
+    int64_t JoinRequest::getInitTimestamp() const
+    {
+        return proto.init_timestamp();
     }
 
     std::string JoinRequest::toString() const
@@ -22,7 +30,6 @@ namespace widen
     void JoinRequest::deserialize(const std::string &serialized)
     {
         proto.ParseFromString(serialized);
-        identifier = Identifier(proto.identifier());
     }
 
     std::string JoinRequest::rawSerialize() const

@@ -5,4 +5,5 @@
 namespace widen
 {
     long getTimestamp();
+
 }

@@ -2,5 +2,5 @@
 
 namespace widen
 {
-    class JoinReply: 
+    class JoinReply: : 
 }

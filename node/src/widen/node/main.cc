@@ -7,7 +7,7 @@
 int main(int argc, char **argv)
 {
     widen::config::loadConfigFile("config.yaml");
-    WIDEN_INFO("After config: port = {}", widen::config::port::message);
+    WIDEN_INFO("After config: introducer port = {}", widen::config::port::introducer);
     widen::Node node(argc, argv);
     node.start();
 

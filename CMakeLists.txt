@@ -11,8 +11,8 @@ file(COPY config.yaml DESTINATION ${CMAKE_BINARY_DIR})
 
 add_subdirectory(protos)
 add_subdirectory(common)
-# add_subdirectory(client)
+add_subdirectory(client)
 
-# add_subdirectory(node)
-# add_subdirectory(test)
+add_subdirectory(node)
+add_subdirectory(test)
 add_subdirectory(playground)

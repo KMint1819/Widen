@@ -1,6 +1,9 @@
 #include "widen/common/log.hpp"
+#include "widen/common/serialization.hpp"
 #include "widen/node/introducer/introducer.hpp"
-// #include "widen/node/handlers/joinRequestHandler.hpp"
+#include "widen/general.pb.h"
+#include "widen/introducer.pb.h"
+#include "widen/node/introducer/joinRequestHandler.hpp"
 
 namespace widen
 {
@@ -10,12 +13,6 @@ namespace widen
           socket(ioc),
           port(port)
     {
-    }
-
-    Introducer::Introducer(asio::io_context &ioc, int port, IpChangeCallback onIpChange)
-        : Introducer(ioc, port)
-    {
-        this->onIpChange = onIpChange;
     }
 
     void Introducer::start()
@@ -28,80 +25,95 @@ namespace widen
         acceptor.async_accept(socket, [this](asio::error_code ec)
                               {
             if(ec)
-            {
                 WIDEN_ERROR("Error accept: {}", ec.message());
-            }
             else
             {
                 WIDEN_TRACE("Accepting: {}", socket.remote_endpoint().address().to_string());
-                if(onIpChange)
-                {
-                    onIpChange.value()(socket.local_endpoint().address().to_v4());
-                }
                 std::make_shared<Session>(std::move(socket))->start();
             }
             doAccept(); });
     }
 
-    // MessageSession::MessageSession(tcp::socket socket)
-    //     : socket(std::move(socket))
-    // {
-    // }
+    Introducer::Session::Session(tcp::socket socket)
+        : socket(std::move(socket))
+    {
+    }
 
-    // void MessageSession::start()
-    // {
-    //     doReadHeader();
-    // }
+    void Introducer::Session::start()
+    {
+        doReadHeaderLen();
+    }
 
-    // void MessageSession::doReadHeader()
-    // {
-    //     auto self(shared_from_this());
-    //     asio::async_read(socket, asio::buffer(recvBuf, 4),
-    //                      [this, self](asio::error_code ec, std::size_t sz)
-    //                      {
-    //                          if (ec)
-    //                          {
-    //                              WIDEN_ERROR("Error read header: {}", ec.message());
-    //                          }
-    //                          else
-    //                          {
-    //                              WIDEN_TRACE("Read {} bytes of header", sz);
+    void Introducer::Session::doReadHeaderLen()
+    {
+        auto self(shared_from_this());
+        asio::async_read(socket, asio::buffer(recvBuf, 4),
+                         [this, self](asio::error_code ec, std::size_t sz)
+                         {
+                             if (ec)
+                             {
+                                 WIDEN_ERROR("Error read header length: {}", ec.message());
+                             }
+                             else
+                             {
+                                 WIDEN_TRACE("Read {} bytes of header length", sz);
 
-    //                              int bodyLength = widen::convertLengthString(std::string(recvBuf.begin(), recvBuf.begin() + sz));
-    //                              doReadBody(bodyLength);
-    //                          }
-    //                      });
-    // }
+                                 int bodyLength = deserializeNumber<uint32_t>(std::string(recvBuf.begin(), recvBuf.begin() + sz));
+                                 doReadHeader(bodyLength);
+                             }
+                         });
+    }
+    void Introducer::Session::doReadHeader(std::uint32_t headerLen)
+    {
+        auto self(shared_from_this());
+        asio::async_read(socket, asio::buffer(recvBuf, headerLen),
+                         [this, self](asio::error_code ec, std::size_t sz)
+                         {
+                             if (ec)
+                             {
+                                 WIDEN_ERROR("Error read header: {}", ec.message());
+                             }
+                             else
+                             {
+                                 WIDEN_TRACE("Read {} bytes of header", sz);
 
-    // void MessageSession::doReadBody(int length)
-    // {
-    //     auto self(shared_from_this());
-    //     asio::async_read(socket, asio::buffer(recvBuf, length),
-    //                      [this, self](asio::error_code ec, std::size_t sz)
-    //                      {
-    //                          if (ec)
-    //                          {
-    //                              WIDEN_ERROR("Error read body: {}", ec.message());
-    //                          }
-    //                          else
-    //                          {
-    //                              WIDEN_TRACE("Read {} bytes of body", sz);
-    //                              handleMessage(std::string(recvBuf.begin(), recvBuf.begin() + sz));
-    //                          }
-    //                          doReadHeader();
-    //                      });
-    // }
+                                 proto::Header header;
+                                 header.ParseFromString({recvBuf.begin(), recvBuf.begin() + sz});
 
-    // void MessageSession::handleMessage(const std::string &msg)
-    // {
-    //     Message message;
-    //     message.ParseFromString(msg);
-    //     WIDEN_TRACE("Handling message: {}", message.DebugString());
+                                 doReadBody(header.type(), header.body_length());
+                             }
+                         });
+    }
 
-    //     if (message.has_joinrequest())
-    //     {
-    //         WIDEN_TRACE("Message is a join request!");
-    //         std::make_shared<JoinRequestHandler>(std::move(socket), message.joinrequest())->start();
-    //     }
-    // }
+    void Introducer::Session::doReadBody(const std::string &type, uint32_t bodyLen)
+    {
+        auto self(shared_from_this());
+        asio::async_read(socket, asio::buffer(recvBuf, bodyLen),
+                         [this, self, type](asio::error_code ec, std::size_t sz)
+                         {
+                             if (ec)
+                             {
+                                 WIDEN_ERROR("Error read body: {}", ec.message());
+                             }
+                             else
+                             {
+                                 WIDEN_TRACE("Read {} bytes of body", sz);
+                                 handleBody(type, std::string(recvBuf.begin(), recvBuf.begin() + sz));
+                             }
+                             doReadHeaderLen();
+                         });
+    }
+
+    void Introducer::Session::handleBody(const std::string &type, const std::string &body)
+    {
+        if (type == "JOIN")
+        {
+            WIDEN_TRACE("Message is a join request!");
+            std::make_shared<JoinRequestHandler>(std::move(socket), body)->start();
+        }
+        else
+        {
+            throw std::logic_error(fmt::format("Type <{}> is invalid", type));
+        }
+    }
 }

@@ -1,12 +1,14 @@
 #include "widen/common/log.hpp"
 #include "widen/common/config.hpp"
 #include "widen/common/utils.hpp"
+#include "widen/common/serialization.hpp"
 
 #include "widen/node/node.hpp"
 #include "widen/node/distributed_fs/distributed_fs.hpp"
 #include "widen/node/failure_detection/failure_detector.hpp"
 #include "widen/node/introducer/introducer.hpp"
-#include "widen/common/proto_wrapper/join_response.hpp"
+#include "widen/general.pb.h"
+#include "widen/introducer.pb.h"
 
 #include <fstream>
 #include <chrono>
@@ -33,26 +35,21 @@ namespace widen
 
     void Node::start()
     {
-        std::unique_ptr<Introducer> introducer;
-        std::unique_ptr<DistributedFS> distributedFS;
-        std::unique_ptr<FailureDetector> failureDetector;
         if (introducerEndpoints.size() != 0)
         {
             memberlist = joinViaIntroducer();
-            introducer = std::make_unique<Introducer>(ioc, config::port::introducer);
         }
         else
         {
-            introducer = std::make_unique<Introducer>(ioc, config::port::introducer, [this](const address_v4 &rhs)
-                                                      { 
-                                                        WIDEN_TRACE("My ip: {}", rhs.to_string()); 
-                                                        selfAddr = rhs; });
+            // add myself to memberlist
+            memberlist.emplace_back(getSelfIp(), getTimestamp());
         }
         WIDEN_INFO("Initial memberlist: \n\n{}\n", memberlistDescription(memberlist));
 
+        Introducer introducer(ioc);
         // distributed_fs.start();
         // detector.start();
-        introducer->start();
+        introducer.start();
 
         ioc.run();
         WIDEN_WARN("Node exiting...");
@@ -67,32 +64,45 @@ namespace widen
                    socket.remote_endpoint().address().to_v4().to_string(),
                    socket.remote_endpoint().port());
 
-        JoinRequest req(getTimestamp());
-        WIDEN_TRACE("Join string: {}", req.toString());
-        std::string buffer = req.serialize();
+        proto::JoinRequest req;
+        std::string bodyStr;
+        {
+            req.set_init_timestamp(getTimestamp());
+            req.SerializeToString(&bodyStr);
+        }
+        WIDEN_TRACE("JoinRequest: {}", req.DebugString());
 
-        int nBytes = socket.write_some(asio::buffer(buffer));
-        WIDEN_TRACE("node wrote {} bytes to join", nBytes);
+        proto::Header header;
+        std::string headerStr;
+        {
+            header.set_type("JOIN");
+            header.set_body_length(bodyStr.length());
+            header.SerializeToString(&headerStr);
+        }
+        WIDEN_TRACE("JoinHeader: {}", header.DebugString());
 
-        //
-        std::array<char, 1024> recvBuf;
-        nBytes = asio::read(socket, asio::buffer(recvBuf, 4));
-        WIDEN_TRACE("Received {} bytes as header", nBytes);
+        std::size_t sz = 0;
+        sz = asio::write(socket, asio::buffer(serializeUInt32(headerStr.length())));
+        sz = asio::write(socket, asio::buffer(headerStr));
+        sz = asio::write(socket, asio::buffer(bodyStr));
 
-        buffer = {recvBuf.begin(), recvBuf.begin() + 4};
-        uint32_t length = widen::deserializeNumber<uint32_t>(buffer);
+        std::array<char, 8192> buf;
+        sz = asio::read(socket, asio::buffer(buf, 4));
+        uint32_t bodyLen = deserializeNumber<uint32_t>({buf.begin(), buf.begin() + 4});
 
-        nBytes = asio::read(socket, asio::buffer(recvBuf, length));
-        WIDEN_TRACE("Received {} from introducer", nBytes);
+        sz = asio::read(socket, asio::buffer(buf, bodyLen));
+        assert(bodyLen < 8192);
+        assert(bodyLen == sz);
 
-        buffer = {recvBuf.begin(), recvBuf.begin() + nBytes};
-        std::string recvString(recvBuf.begin(), recvBuf.begin() + nBytes);
+        proto::JoinResponse res;
+        res.ParseFromString({buf.begin(), buf.begin() + bodyLen});
 
-        auto res = JoinResponse::buildDeserialize(recvString);
-
-        auto rawIdentifiers = res.getIdentifiers();
-
-        selfAddr = asio::ip::address_v4::from_string(res.getRequesterIp());
-        return {rawIdentifiers.begin(), rawIdentifiers.end()};
+        auto identifiers = res.identifiers();
+        Memberlist memlist;
+        for (const auto &identifier : identifiers)
+        {
+            memlist.emplace_back(identifier.ip(), identifier.init_timestamp());
+        }
+        return memlist;
     }
 }

@@ -1,3 +1,8 @@
 syntax = "proto3";
 
-package widen.proto.general;
+package widen.proto;
+
+message Header {
+    string type = 1;
+    uint32 body_length = 2;
+}

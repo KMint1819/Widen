@@ -1,21 +1,13 @@
 syntax = "proto3";
 
-package widen.proto.introducer;
+package widen.proto;
 
 import "identifier.proto";
 
-message Request
-{
-    oneof type {
-        JoinRequestProto join_request_proto= 1;
-    }
-}
-
-message JoinRequestProto {
+message JoinRequest{
     int64 init_timestamp = 1;
 }
 
-message JoinResponseProto {
-    string requester_ip = 1;
-    repeated IdentifierProto identifiers = 2;
+message JoinResponse{
+    repeated Identifier identifiers = 2;
 }

@@ -1,20 +1,23 @@
 #pragma once
-#include <asio.hpp>
 
-#include "widen/common/proto_wrapper/join_request.hpp";
-#include "widen/common/proto_wrapper/join_response.hpp";
+#include "widen/common/config.hpp"
+#include <asio.hpp>
 
 namespace widen
 {
     using asio::ip::tcp;
+
+    /// TODO: abstract shared functions to parent class
+    /// @brief
+    /// Workflow: readHeaderLen -> readHeader -> readBody ---]
+    ///             ^                                        |
+    ///             |                                        |
+    ///             [--------------<---------<---------------]
+
     class Introducer
     {
-        using IpChangeCallback = std::function<void(asio::ip::address_v4)>;
-        using Request = JoinRequest;
-
     public:
-        Introducer(asio::io_context &ioc, int port);
-        Introducer(asio::io_context &ioc, int port, IpChangeCallback onIpChange);
+        Introducer(asio::io_context &ioc, int port = config::port::introducer);
         void start();
 
     private:
@@ -22,7 +25,6 @@ namespace widen
         tcp::acceptor acceptor;
         tcp::socket socket;
         int port;
-        std::optional<IpChangeCallback> onIpChange;
 
         void doAccept();
 
@@ -36,8 +38,10 @@ namespace widen
             tcp::socket socket;
             std::array<char, 8192> recvBuf;
 
-            void doRead();
-            void handleMessage(const std::string &);
+            void doReadHeaderLen();
+            void doReadHeader(uint32_t headerLen);
+            void doReadBody(const std::string &type, uint32_t bodyLen);
+            void handleBody(const std::string &type, const std::string &body);
         };
     };
 }

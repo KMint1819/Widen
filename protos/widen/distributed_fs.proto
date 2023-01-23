@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package widen.proto.distributed_fs;
+package widen.proto;
 
 // import "general.proto"; // was commented out to avoid vscode unused warning
 

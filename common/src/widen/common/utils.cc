@@ -17,6 +17,7 @@ namespace widen
     /// @brief Reference: https://gist.github.com/quietcricket/2521037
     asio::ip::address_v4 getSelfIp(const std::string &interface)
     {
+        WIDEN_TRACE("Getting ip from interface {}", interface);
 #ifdef __unix__
         std::string ipAddress = "";
         ifaddrs *interfaces = nullptr;
@@ -32,7 +33,8 @@ namespace widen
             {
                 if (temp_addr->ifa_addr->sa_family == AF_INET)
                 {
-                    if (strcmp(temp_addr->ifa_name, interface.data()))
+                    std::string ifaName(temp_addr->ifa_name);
+                    if (ifaName == interface)
                     {
                         ipAddress = inet_ntoa(((struct sockaddr_in *)temp_addr->ifa_addr)->sin_addr);
                     }

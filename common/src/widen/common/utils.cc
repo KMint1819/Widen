@@ -14,7 +14,10 @@ namespace widen
         return epochMS.count();
     }
 
-    /// @brief Reference: https://gist.github.com/quietcricket/2521037
+    /// @brief A function to get self ip
+    /// Reference: https://gist.github.com/quietcricket/2521037
+    /// TODO: Try remove the need of this function because computers might
+    /// have different network interfaces
     asio::ip::address_v4 getSelfIp(const std::string &interface)
     {
         WIDEN_TRACE("Getting ip from interface {}", interface);

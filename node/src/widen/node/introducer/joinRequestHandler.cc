@@ -22,7 +22,7 @@ namespace widen
         memberlist.emplace_back(
             socket.remote_endpoint().address().to_v4(),
             req.init_timestamp());
-        doWrite();
+        doGossip();
     }
 
     void JoinRequestHandler::doWrite()

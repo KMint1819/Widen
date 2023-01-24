@@ -27,6 +27,23 @@ namespace widen
         }
         return ss.str();
     }
+
+    Memberlist randomPickMembers(const Memberlist &memberlist, const int n)
+    {
+        auto begin = memberlist.begin();
+        auto end = memberlist.end();
+        size_t left = std::distance(begin, end);
+        for (int i = 0; i < n; i++)
+        {
+            auto r = begin;
+            std::advance(r, rand() % left);
+            std::swap(begin, r);
+            ++begin;
+            --left;
+        }
+        return begin;
+    }
+
     void memberlistUpdate(Memberlist &memberlist, const Member &member)
     {
         throw NotImplementedError();

@@ -28,5 +28,12 @@ namespace widen
 
     std::string memberlistDescription(const Memberlist &memberlist);
 
+    /// @brief Pick n random members from the memberlist using Fisher-Yates shuffle.
+    /// Reference: https://stackoverflow.com/questions/9345087/choose-m-elements-randomly-from-a-vector-containing-n-elements
+    /// @param memberlist
+    /// @param n
+    /// @return
+    Memberlist randomPickMembers(const Memberlist &memberlist, const int n);
+
     void memberlistUpdate(Memberlist &, const Member &);
 }

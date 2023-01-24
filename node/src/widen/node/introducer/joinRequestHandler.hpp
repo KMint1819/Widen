@@ -14,6 +14,7 @@ namespace widen
     public:
         JoinRequestHandler(tcp::socket, const std::string &body);
         void start();
+        void doGossip();
         void doWrite();
 
     private:

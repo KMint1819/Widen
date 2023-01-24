@@ -24,6 +24,8 @@ A distributed system for deep learning model inference
 
     ### IF YOU WANT TO USE DOCKER, RUN THE CONTAINER HERE USING THIS SCRIPT:
     ./scripts/env
+    docker exec -it <container_name> bash
+    cd /workspace
     ### 
 
     cd build
